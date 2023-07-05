@@ -27,8 +27,7 @@
 #include <omp.h>
 #endif
 
-#include <o2scl/anneal_gsl.h>
-#include <o2scl/vector.h>
+#include "anneal_gsl.h"
 
 namespace o2scl {
   

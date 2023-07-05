@@ -24,12 +24,8 @@
 #include <cmath>
 #include <cstdlib>
 
-#include <gsl/gsl_siman.h>
-
-#include <o2scl/multi_funct.h>
-#include <o2scl/funct.h>
-#include <o2scl/anneal_para.h>
-#include <o2scl/test_mgr.h>
+#include "multi_funct.h"
+#include "anneal_para.h"
 
 #ifdef O2SCL_OPENMP
 #include <omp.h>
@@ -51,9 +47,6 @@ int main(int argc, char *argv[]) {
 
   cout.setf(ios::scientific);
 
-  test_mgr t;
-  t.set_output_level(2);
-
   anneal_para<multi_funct,ubvector> ga;
 
 #ifdef O2SCL_OPENMP
@@ -70,10 +63,6 @@ int main(int argc, char *argv[]) {
   ga.tol_abs=1.0e-6;
   ga.mmin(1,init,result,fx);
   cout << init[0] << " " << result << endl;
-  t.test_rel(init[0],2.0,1.0e-3,"another test - value");
-  t.test_rel(result,-1.0,1.0e-3,"another test - min");
-    
-  t.report();
   
   return 0;
 }

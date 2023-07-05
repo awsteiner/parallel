@@ -37,8 +37,86 @@
 
 namespace o2scl {
 
-  /** \brief Simulated annealing base
+  template<class func_t=multi_funct, class dfunc_t=func_t,
+    class vec_t=boost::numeric::ublas::vector<double> > class mmin_base {
 
+#ifndef DOXYGEN_INTERNAL
+
+  protected:
+    
+    /// Stream for verbose output
+    std::ostream *outs;
+    
+    /// Stream for verbose input
+    std::istream *ins;
+    
+#endif
+    
+  public:
+    
+    mmin_base() {
+      verbose=0;
+      ntrial=100;
+      tol_rel=1.0e-4;
+      tol_abs=1.0e-4;
+      last_ntrial=0;
+      err_nonconv=true;
+      outs=&std::cout;
+      ins=&std::cin;
+    }
+    
+    virtual ~mmin_base() {}
+    
+    /// Output control
+    int verbose;
+    
+    /// Maximum number of iterations
+    int ntrial;
+    
+    /// Function value tolerance
+    double tol_rel;
+    
+    /// The independent variable tolerance
+    double tol_abs;
+    
+    /// The number of iterations for in the most recent minimization
+    int last_ntrial;
+    
+    /// If true, call the error handler if the routine does not "converge"
+    bool err_nonconv;
+    
+    /** \brief Set streams for verbose I/O
+        
+        Note that this function stores pointers to the user-specified
+        output streams, and these pointers are not copied in child copy
+        constructors.
+    */
+    int set_verbose_stream(std::ostream &out, std::istream &in) {
+      outs=&out;
+      ins=&in;
+      return 0;
+    }
+    
+    /** \brief Calculate the minimum \c min of \c func w.r.t. the
+        array \c x of size \c nvar.
+    */
+    virtual int mmin(size_t nvar, vec_t &x, double &fmin, 
+                     func_t &func)=0;
+    
+    /** \brief Calculate the minimum \c min of \c func
+        w.r.t. the array \c x of size \c nvar with gradient
+        \c dfunc
+    */
+    virtual int mmin_de(size_t nvar, vec_t &x, double &fmin, 
+                        func_t &func, dfunc_t &dfunc)
+    {
+      return mmin(nvar,x,fmin,func);
+    }
+
+  };
+  
+  /** \brief Simulated annealing base
+      
       The seed of the generator is not fixed initially by calls to
       mmin(), so if successive calls should reproduce the same
       results, then the random seed should be set by the user before
@@ -53,7 +131,7 @@ namespace o2scl {
       The number of iterations at each temperature is controlled by
       \ref o2scl::mmin_base::ntrial which defaults to 100.
   */
-  template<class func_t=multi_funct,
+    template<class func_t=multi_funct,
     class vec_t=boost::numeric::ublas::vector<double>,
            class rng_t=o2scl::rng<> > class anneal_base :
     public mmin_base<func_t,func_t,vec_t> {

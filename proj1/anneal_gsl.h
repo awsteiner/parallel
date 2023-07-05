@@ -51,7 +51,7 @@
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/matrix.hpp>
 
-#include <o2scl/anneal.h>
+#include "anneal.h"
 #include "multi_funct.h"
 
 namespace o2scl {
