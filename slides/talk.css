@@ -1,0 +1,228 @@
+/* Change the accent colors for the "header" slide */
+:root {
+    --accent1: rgb(0,40,0);
+    --accent2: rgb(40,0,0);
+    --accent3: rgb(0,0,40);
+    --aws1: rgba(255,255,255,0.12);
+}
+
+.aws {
+    text-decoration-color: blue;
+}
+
+td {
+    padding: 0em;
+}
+
+table {
+    margin-left: 0.5em;
+}
+
+body {
+    background: 0;
+    background-color: rgb(255,255,255);
+    font-size: 65%;
+}
+
+section > header.slide {
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center; 
+}
+
+.slide {
+    /*
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+*/
+    padding: 2.5rem;
+    background: radial-gradient(transparent,
+                                rgba(200,200,200,.7)) var(--aws1);
+    color: black;
+}
+
+/* Trim the default Inspire.js margins */
+.slide ul {
+    padding: 0;
+    /* This is required to leave enough space on the left for
+       the bullet */
+    margin-left: 2.0em;
+    margin-top: 0;
+    margin-right: 1.0em;
+    margin-bottom: 0;
+}
+
+.slide li {
+    margin-top: 0.8em;
+    margin-bottom: 0.8em;
+}
+
+.slide p {
+    padding:0;	
+    /* This is required to leave enough space on the left for
+       solitary paragraphs */
+    margin-left: 0.5em;
+    margin-top: 0.5em;
+    margin-right: 0;
+    margin-bottom: 0.5em;
+}
+
+.div_header {
+    position: absolute;
+    top: 0%;
+    left: 0%; 
+    width: 100%;
+    height: 7%;
+}
+
+.div_left_panel {
+    position: absolute;
+    top: 7%;
+    left: 0%; 
+    width: 50%;
+    height: 92%;
+}
+
+.div_main {
+    position: absolute;
+    top: 7%;
+    left: 0%; 
+    width: 100%;
+    height: 92%;
+}
+
+.div_right_panel {
+    position: absolute;
+    top: 7%;
+    left: 50%; 
+    width: 50%;
+    height: 92%;
+    vertical-align: middle;
+}
+
+.img_class {
+    object-fit: scale-down;
+    display: block;
+    margin: auto;
+    padding: 0;
+    max-height: 100%;
+}
+
+.img_class2 {
+    object-fit: scale-down;
+    display: block;
+    margin: auto;
+    padding: 0;
+    max-height: 70%;
+}
+
+/* Set the H2 color */
+.slide h2 {
+    color: rgb(110,110,200);
+    padding:0;	
+    margin:0;
+}
+
+/* Modify the font scaling 
+.slide * {
+    font-size: 100%;
+}
+*/
+
+/* Remove Inspire.js default line separating table head and border */
+.slide tbody tr > * {
+    border: 0;
+}
+
+.reference {
+    padding: 0;	
+    margin-left: 0.5em;
+    margin-top: 0.5em;
+    margin-right: 0;
+    margin-bottom: 0.5em;
+    font-size: 75%;
+    color: rgb(20,20,200);
+}
+
+.refblue {
+    padding: 0;	
+    margin-left: 0.5em;
+    margin-top: 0.5em;
+    margin-right: 0;
+    margin-bottom: 0.5em;
+    color: rgb(150,150,255);
+}
+
+.utk {
+    color: rgb(255,130,0);
+}
+
+.color1 {
+    color: rgb(220,150,150);
+}
+
+.highlight {
+    padding: 0;	
+    margin-left: 0.5em;
+    margin-top: 0.5em;
+    margin-right: 0;
+    margin-bottom: 0.5em;
+    color: rgb(220,150,150);
+}
+
+.creference {
+    padding: 0;	
+    margin-left: 0.5em;
+    margin-top: 0.5em;
+    margin-right: 0;
+    margin-bottom: 0.5em;
+    font-size: 75%;
+    color: rgb(20,20,200);
+    text-align: center;
+}
+
+.tiny {
+  font-size: 50%;
+}
+
+.small {
+  font-size: 80%;
+}
+
+.large {
+  font-size: 150%;
+}
+
+.smaller {
+  font-size: 65%;
+}
+
+.tight li {
+    margin-top: 0.0em;
+    margin-bottom: 0.0em;
+}
+
+/* The change in the second group from opacity 0.3 to 1 
+   ensures that items don't get greyed out when they are
+   delayed */
+@media screen {
+    .delayed,
+    .delayed-children > * {
+        opacity: 0;
+    }
+    
+    .delayed.displayed,
+    .delayed-children > .displayed {
+        opacity: 1;
+    }
+    
+    .delayed.current,
+    .delayed-children > .current,
+    .delayed.displayed.persistent,
+    .delayed-children > .displayed.persistent,
+    .delayed-children.persistent > .displayed {
+        opacity: 1;
+    }
+}
