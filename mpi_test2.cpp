@@ -58,16 +58,16 @@ int main(int argc, char *argv[]) {
     
     for(size_t i=0;i<mpi_size-1;i++) {
 
-      int proc_index;
+      int req_index;
       
       std::cout << "Waiting for completion of a task." << std::endl;
       
       // Wait until one of the workers is prepared to send and
       // receive
-      MPI_Waitany(mpi_size-1,&request[0],&proc_index,&status);
+      MPI_Waitany(mpi_size-1,&request[0],&req_index,&status);
       
-      cout << "Found result: " << output_buffers[i][0]
-           << " computed by rank " << proc_index << "." << endl;
+      cout << "Found result: " << output_buffers[req_index][0]
+           << " computed by request with index " << req_index << "." << endl;
     }
     
     // Do something with the result
