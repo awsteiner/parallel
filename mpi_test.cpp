@@ -5,6 +5,8 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
 
+  int mpi_rank, mpi_size;
+  
   // Init MPI
   MPI_Init(&argc,&argv);
 
@@ -19,7 +21,7 @@ int main(int argc, char *argv[]) {
              tag,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
   }
 
-  cout << mpi_rank << endl;
+  cout << mpi_rank << "/" << mpi_size << endl;
 
   // Send a message to the next MPI rank
   if (mpi_size>1 && mpi_rank<mpi_size-1) {
