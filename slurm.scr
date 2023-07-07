@@ -4,7 +4,7 @@
 #SBATCH --account=phy230011p
 
 # Partition in Bridges-2 to be used (default: RM)
-#SBATCH --partition=RM
+#SBATCH --partition=RM-shared
 
 #SBATCH --job-name=bamr
 
@@ -39,4 +39,4 @@ export LD_LIBRARY_PATH=/ocean/projects/phy230011p/shared/gsl/lib:/ocean/projects
 cd /ocean/projects/phy230011p/shared/bamr
 
 # Test run of model 'nlines' (without dpdM)
-mpirun -n 2 ./bamr -threads 64 -mcmc
+mpirun -n 1 ./bamr -threads 64 -mcmc
