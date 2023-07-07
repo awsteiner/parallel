@@ -43,5 +43,11 @@ mpi_test: mpi_test.o
 mpi_test.o: mpi_test.cpp
 	mpic++ -o mpi_test.o -c mpi_test.cpp
 
+mpi_test2: mpi_test2.o
+	mpic++ -o mpi_test2 mpi_test2.o
+
+mpi_test2.o: mpi_test2.cpp
+	mpic++ -o mpi_test2.o -c mpi_test2.cpp
+
 clean:
-	rm -f omp_test omp_test2 mpi_test *.o
+	rm -f omp_test omp_test2 mpi_test mpi_test2 *.o
