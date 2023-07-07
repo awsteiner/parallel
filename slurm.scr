@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# Charge ID to be used for this job (default: phy230011p)
+#SBATCH --account=phy230011p
+
+# Partition in Bridges-2 to be used (default: RM)
+#SBATCH --partition=RM
+
+#SBATCH --job-name=bamr
+
+# Total walltime requested (default: 1 hr, max: 48 hrs)
+#SBATCH --time=48:00:00
+
+# Total number of MPI tasks (deafult: None)
+#SBATCH --ntasks=1
+
+# Number of OpenMP CPUs/task (default: 1)
+#SBATCH --cpus-per-task=64
+
+# Write standard output and error to file (default: slurm-<jobID>.out)
+#SBATCH --output=out/nl.out
+
+# Set up email notifications
+#SBATCH --mail-user=username@hostname.edu
+#SBATCH --mail-type=BEGIN,FAIL,END
+
+# Load the required modules
+module load gcc
+module load boost
+module load hdf5
+module load python
+module load numpy
+module load AI/tensorflow_23.02-2.10.0-py3
+
+# Set up environment 
+export LD_LIBRARY_PATH=/ocean/projects/phy230011p/shared/gsl/lib:/ocean/projects/phy230011p/shared/o2scl/lib:$LD_LIBRARY_PATH
+
+# Change directory
+cd /ocean/projects/phy230011p/shared/bamr
+
+# Test run of model 'nlines' (without dpdM)
+mpirun -n 2 ./bamr -threads 64 -mcmc
