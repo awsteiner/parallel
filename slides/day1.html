@@ -1,0 +1,559 @@
+s<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+	  content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+    <title></title>
+
+    <!-- Inspire.js -->
+    <link href="https://isospin.roam.utk.edu/public_data/inspire_08_25_22/inspire.css" rel="stylesheet" />
+    <link href="https://isospin.roam.utk.edu/public_data/inspire_08_25_22/theme.css" rel="stylesheet" />
+    <link href="https://isospin.roam.utk.edu/public_data/parallel/talk.css" rel="stylesheet" />
+
+    <!-- MathJAX support:
+    The margin command ensures smaller margins around equations
+    -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+          tex2jax: {
+              inlineMath: [['$','$'], ['\\(','\\)']]
+          },
+          "HTML-CSS": {
+              styles: {
+                  '.MathJax_Display': {
+                      "margin": 0
+                  }
+              },
+              linebreaks: {
+                  automatic: true
+              }
+          }
+      });
+    </script>
+    <script type="text/javascript"
+	    src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- End MathJAX support -->
+    
+  </head>
+  
+  <body class="language-markup"
+	data-prism-plugins="normalize-whitespace"
+	>
+    
+    <header id="intro" class="slide">
+      <div style="position: absolute; left: 1120px; top: 630px;
+                  background-color: #ffffff;">&nbsp;
+      </div>
+      <div class="small">
+        <h1>A short parallel computing class for C/C++</h1>
+	<h2>
+	  Andrew W. Steiner
+	</h2>
+	&nbsp;<br>
+	&nbsp;<br>
+	<center>UTK/ORNL</center>
+	&nbsp;<br>
+	&nbsp;<br>
+	<center>July 6, 2023</center>
+	&nbsp;<br>
+	&nbsp;<br>
+      </div>
+    </header>
+    <section>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>Admin</h2>
+        </div>
+	<div class="div_main">
+          <ul>
+            <li>Logins on bridges2.psc.edu and
+              neutrino.desktop.utk.edu</li>
+            <li>Slack channel</li>
+            <li>Github repository:
+              <a class="aws" href="https://github.com/awsteiner/parallel">https://github.com/awsteiner/parallel</a></li>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>Outline</h2>
+        </div>
+	<div class="div_main">
+          <ul>
+            <li>Makefiles and Environment Variables</li>
+            <li>HPC Filesystems</li>
+            <li>OpenMP or Shared Memory Parallelism</li>
+            <li>Group Exercises</li>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>Makefiles and Environment Variables I</h2>
+        </div>
+	<div class="div_main">
+          <ul>
+            <li>Terminal is a GUI, plus a "shell"</li>
+            <li class="delayed">Interaction between the user and the
+              operating systems</li>
+            <li class="delayed">I will often assume bash, but the
+              default on MacOS is zsh</li>
+            <li class="delayed">Determine your shell using
+            e.g. <tt>ps</tt></li>
+            <li class="delayed">Setting and displaying environment
+              variables depends on which shell you use</li>
+            <li class="delayed">On bash, show your environment variables using
+              <tt>env</tt> and set using e.g.
+              <tt>export VAR=value</tt>
+            </li>
+            <li class="delayed">Particularly important environment variables:
+              <tt>PATH, LD_LIBRARY_PATH, EDITOR, CC, CXX,
+                OMP_NUM_THREADS, DISPLAY, PS1, USER, SHELL, TERM,
+                LSCOLORS, HOME</tt></li>
+            <li class="delayed">Common pattern: <tt>env | grep -i path</tt></li>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>Makefiles and Environment Variables II</h2>
+        </div>
+	<div class="div_main">
+          <ul class="">
+            <li>Basic structure</li>
+            <pre>
+              target: dependencies
+                   build rules
+            </pre>
+            <li>e.g.</li>
+            <pre>
+              code: code.o
+                   $(CXX) -o code code.o
+
+              code.o: code.cpp code.h
+                   $(CXX) -o code.o -c code.cpp
+            </pre>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>Makefiles and Environment Variables II</h2>
+        </div>
+	<div class="div_main">
+          <ul class="">
+            <li>Notice how these targets uses environment
+              variables?</li>
+            <li class="delayed">Make creates a "subshell" and executes commands
+              within that subshell (defaults to <tt>sh</tt>)
+            </li>
+            <li class="delayed">@ prefix doesn't echo commands</li>
+            <li class="delayed">- prefix allows commands to fail</li>
+            <li class="delayed">Variables referred to by <tt>$()</tt></li>
+            <li class="delayed">Need two $$'s for one $</li>
+            <li class="delayed">Makefile is picky about tabs</li>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>Makefiles and Environment Variables III</h2>
+        </div>
+	<div class="div_main">
+          <ul class="">
+            <li>Two tricks:</li>
+            <ul>
+              <li class="delayed">Variable as the result of a shell
+              command</li>
+              <li class="delayed">Foreach</li>
+            </ul>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>HPC Filesystems</h2>
+        </div>
+	<div class="div_main">
+          <ul class="">
+            <li>System configurations vary widely: always read the HPC
+              documentation</li>
+            <li class="delayed">Can be significantly different
+              compared to logging into a standard Unix computer</li>
+            <li class="delayed">Login nodes and compute nodes</li>
+            <li class="delayed">Networked file systems: user
+              directories and project directories</li>
+            <li class="delayed">Not all file systems are accessible
+              from both the login and the compute nodes</li>
+            <li class="delayed">Frequently, output files must be stored on a
+              scratch filesystem, and copied to a user (or project)
+              directory later</li>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>HPC Filesystems II</h2>
+        </div>
+	<div class="div_main">
+          <ul class="">
+            <li>Login nodes are shared among many users (and thus
+              slow), so be careful</li>
+            <ul>
+              <li class="delayed">No computation, especially no parallelism</li>
+              <li class="delayed">No parallel compiling with "make -j"</li>
+              <li class="delayed">No time-consuming tasks (e.g. no <tt>ls -lR
+                  /</tt>)</li>
+            </ul>
+            <li class="delayed">File I/O can be the <b>most time-consuming
+                part of code execution</b>.</li>
+            <li class="delayed">Often, Globus is preferred over ssh
+              for large file transfers</li>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>Modules</h2>
+        </div>
+	<div class="div_main">
+          <ul class="">
+            <li>Code often needs to access libraries, but
+              different users need different libraries</li>
+            <li>Some of these libraries require different compilers or
+              environment variables</li>
+            <li>In most systems, this is handled by
+              the <tt>module</tt> command</li>
+            <li><tt>module load</tt>, <tt>module purge</tt>
+              <tt>module help</tt></li>
+            <li>Unfortunately, many of these modules are
+              poorly documented</li>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>Parallel Computing</h2>
+        </div>
+	<div class="div_main">
+          <ul class="">
+            <li>Often it is better to use previously-developed code
+            </li>
+            <li class="delayed">But even then, it is better to understand the
+              concepts behind the code you are using</li>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>OpenMP or Shared Memory parallelism</h2>
+        </div>
+	<div class="div_main">
+          <ul class="">
+            <li>Memory space shared between "threads"</li>
+            <li class="delayed">OpenMP, POSIX threads, Boost threads, etc.</li>
+            <li class="delayed">Relatively small code changes</li>
+            <li class="delayed">Can lead to very confusing behavior</li>
+            <li class="delayed">Requires compiling with, e.g. <tt>-fopenmp</tt>
+              and <tt>#include &lt;omp.h&gt;</tt>
+            </li>
+            <li class="delayed">Danger zones:</li>
+            <ul>
+              <li class="delayed">Multiple threads writing and reading the same
+                location at the same time</li>
+              <li class="delayed">Multiple threads waiting for each other to
+                complete ("deadlock") </li>
+              <li class="delayed">Algorithms which depend sensitively on the
+                order of operations ("race conditions")</li>
+            </ul>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>OpenMP or Shared Memory parallelism II</h2>
+        </div>
+	<div class="div_main">
+          <ul class="">
+            <li>Simple parallel region:</li>
+            <pre>
+              #include &lt;omp.h&gt;
+              #pragma omp parallel
+              {
+                #pragma omp for
+                for(size_t i=0;i&lt;100;i++) {
+                  // ... do something 100 times
+                }
+              }
+            </pre>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>OpenMP or Shared Memory parallelism III</h2>
+        </div>
+	<div class="div_main">
+          <ul class="">
+            <li>Determine the number of
+              threads: <tt>omp_get_num_threads()</tt></li>
+            <li class="delayed">Determine the current 
+              thread: <tt>omp_get_thread_num()</tt></li>
+            <li class="delayed">These latter two functions are only
+              well-defined inside a parallel region</li>
+            <li class="delayed">By default, all variables in the work
+              sharing region are shared except the loop iteration
+              counter.</li>
+            <li class="delayed">"Some variables need to be shared,
+              some need to be private, and you the programmer have to
+              specify what you want."
+            </li>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>OpenMP or Shared Memory parallelism IV</h2>
+        </div>
+	<div class="div_main">
+          <ul class="">
+            <li>Accessing shared memory:</li>
+            <ul>
+              <li class="delayed">Reading memory locations at the same
+                time from multiple threads is typically (but not
+                always) safe</li>
+              <li class="delayed">Writing memory locations at the same
+                time from multiple threads is typically (but not
+                always) unsafe</li>
+            </ul>
+            <li class="delayed">A simple paradigm is to perform a
+              difficult parallel calculation and store the results for
+              every OpenMP thread
+            <li class="delayed">and then to perform a simple
+              calculation to sort or process those results afterwards
+              in a non-parallel region</li>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>OpenMP or Shared Memory parallelism V</h2>
+        </div>
+	<div class="div_main">
+          <ul class="">
+            <li>In C/C++, care must be taken to understand
+              if constructors and destructors are inside or
+              outside parallel regions</li>
+            <li class="delayed">It is dangerous to create an object
+              inside a parallel region, and destroy it outside the
+              parallel region</li>
+            <li class="delayed">Not all objects are "thread-safe"</li>
+            <li class="delayed">Reading is often thread-safe, but
+              writing is rarely thread-safe</li>
+            <li class="delayed">You can use const references to help write
+              thread-safe code</li>
+            <li class="delayed"><a class="aws" href="https://github.com/awsteiner/parallel"><tt>omp_test*.cpp</tt></a> example</li>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>OpenMP or Shared Memory parallelism VI</h2>
+        </div>
+	<div class="div_main">
+          <ul class="">
+            <li>Special regions inside parallel regions:</li>
+            <ul>
+              <li>critical: the enclosed code block will be executed by
+                only one thread at a time, and not simultaneously
+                executed by multiple threads. It is often used to
+                protect shared data from race conditions.</li>
+              <li class="delayed">atomic: the memory update (write, or
+                read-modify-write) in the next instruction will be
+                performed atomically. It does not make the entire
+                statement atomic; only the memory update is atomic. A
+                compiler might use special hardware instructions for
+                better performance than when using critical.</li>
+              <li class="delayed">ordered: the structured block is
+                executed in the order in which iterations would be
+                executed in a sequential loop</li>
+            </ul>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>OpenMP or Shared Memory parallelism VII</h2>
+        </div>
+	<div class="div_main">
+          <ul class="">
+            <li>Special regions inside parallel regions:</li>
+            <ul>
+              <li>barrier: each thread waits until all
+                of the other threads of a team have reached this
+                point. A work-sharing construct has an implicit
+                barrier synchronization at the end.</li>
+              <li class="delayed">nowait: specifies that threads
+                completing assigned work can proceed without waiting
+                for all threads in the team to finish. In the absence
+                of this clause, threads encounter a barrier
+                synchronization at the end of the work sharing
+                construct.</li>
+            </ul>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>OpenMP or Shared Memory parallelism VIII</h2>
+        </div>
+	<div class="div_main">
+          <ul class="tight">
+            <li>The for loop cannot exit early, for example:</li>
+            <pre>
+              // BAD - cannot parallelize with OpenMP
+              for (int i=0;i &lt; 100; i++) {
+                if (i &gt; 50)
+                  break; 
+              }
+            </pre>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>OpenMP or Shared Memory parallelism IX</h2>
+        </div>
+	<div class="div_main">
+          <ul class="tight">
+            <li>Values of the loop control expressions must be the
+              same for all iterations of the loop. For example:</li>
+            <pre>
+              // BAD - cannot parallelize with OpenMP
+              for (int i=0; i &lt; 100; i++) {
+                if (i == 50)
+                  i = 0; 
+              }
+            </pre>
+            <li>Threads that exceed their stack allocation may or may
+              not seg fault. An application may continue to run while
+              data is being corrupted.</li>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>Group Exercises</h2>
+        </div>
+	<div class="div_main">
+          <ul class="tight">
+            <li>Create a OpenMP parallel program, including makefile
+              targets, to compute Pascal's triangle (using addition)
+              to a user-specified number of rows, and output the
+              result to a file at the end.</li>
+            <li class="delayed">Ensure that, at some point during the
+              execution, the program prints out the current number of
+              OpenMP threads</li>
+            <li class="delayed">Go through Project #1, and write down
+              how OpenMP parallelism is used in anneal_para.h.</li>
+            <li class="delayed">Is there a place where the OpenMP
+              parallelism should be changed? What is the overhead
+              associated with the OpenMP parallelism in this code?</li>
+            <li class="delayed">In Project #1, propose a rewrite of
+              the makefile to use OpenMP parallelism and demonstrate
+              its use</li>
+            <li class="delayed">Expand Project #1 to minimize a more
+              difficult function in 10 dimensions in which all 10
+              variables are constrained to be between 0 and 1</li>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>References</h2>
+        </div>
+	<div class="div_main">
+          <ul class="">
+            <li>Some material taken from:
+              <a class="aws" href="https://tildesites.bowdoin.edu/~ltoma/teaching/cs3225-GIS/fall16/Lectures/openmp.html">bowdoin.edu/~ltoma</a></li>
+            <li>A good reference is
+            at <a class="aws" href="https://hpc-tutorials.llnl.gov/openmp/">LLNL</a></li>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+    </section>
+    
+    <script src="https://isospin.roam.utk.edu/public_data/inspire_08_25_22/inspire.mjs" type="module">
+    </script>
+    
+  </body>
+</html>

@@ -13,6 +13,7 @@ int main(void) {
 #pragma omp for
     for(size_t i=0;i<100;i++) {
       arr.push_back(i);
+      cout << i << endl;
     }
   }
   
