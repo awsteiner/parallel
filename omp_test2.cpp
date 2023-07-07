@@ -13,6 +13,7 @@ int main(void) {
 #pragma omp for
     for(size_t i=0;i<100;i++) {
       arr[i]=i;
+      std::cout << i << std::endl;
     }
   }
   
