@@ -24,12 +24,11 @@
 #include <cmath>
 #include <cstdlib>
 
+#include <omp.h>
+#include <mpi.h>
+
 #include "multi_funct.h"
 #include "anneal_para.h"
-
-#ifdef O2SCL_OPENMP
-#include <omp.h>
-#endif
 
 using namespace std;
 using namespace o2scl;
@@ -47,6 +46,8 @@ int main(int argc, char *argv[]) {
 
   cout.setf(ios::scientific);
 
+  MPI_Init(&argc,&argv);
+  
   anneal_para<multi_funct,ubvector> ga;
 
 #ifdef O2SCL_OPENMP
@@ -63,6 +64,8 @@ int main(int argc, char *argv[]) {
   ga.tol_abs=1.0e-6;
   ga.mmin(1,init,result,fx);
   cout << init[0] << " " << result << endl;
+
+  MPI_Finalize();
   
   return 0;
 }

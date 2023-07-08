@@ -155,10 +155,15 @@ namespace o2scl {
     /// A different random number generator for each OpenMP thread
     vrng.resize(n_threads);
 
+    int mpi_rank, mpi_size;
+    // Get MPI rank and size
+    MPI_Comm_rank(MPI_COMM_WORLD,&mpi_rank);
+    MPI_Comm_size(MPI_COMM_WORLD,&mpi_size);
+    
     // Seed the random number generators
     unsigned long int s=time(0);
     for(size_t it=1;it<n_threads;it++) {
-      vrng[it].set_seed(s+it);
+      vrng[it].set_seed(s+it+4*mpi_rank);
     }
 
     // Setup initial temperature and step sizes
@@ -322,9 +327,9 @@ namespace o2scl {
       if (mpi_size>1) {
 
 	double fmin_new;
-	vector<double> x0_new(nv);
+        std::vector<double> x0_new(nv);
 
-	if (mpi_rank<size-1) {
+	if (mpi_rank<mpi_size-1) {
 
 	  // Get the minimum from the higher rank
 	  int tag=0;
@@ -375,7 +380,7 @@ namespace o2scl {
 	  }
 	}
       
-	if (mpi_rank<size-1) {
+	if (mpi_rank<mpi_size-1) {
 	  // Send the minimum back to the higher rank
 	  MPI_Send(&fmin,1,MPI_DOUBLE,mpi_rank+1,2,MPI_COMM_WORLD);
 	  MPI_Send(&(x0_new[0]),nv,MPI_DOUBLE,mpi_rank+1,3,MPI_COMM_WORLD);
