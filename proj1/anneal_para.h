@@ -63,6 +63,7 @@ namespace o2scl {
     /// The maximum time
     double max_time;
 
+    /// Storage
     ubvector x_store, E_store;
     
     /** \brief If true, obtain the global minimum over all MPI ranks
@@ -173,7 +174,7 @@ namespace o2scl {
       // Seed the random number generators, ensuring each thread and
       // rank gets a different seed
       unsigned long int s=time(0);
-      for(size_t it=1;it<n_threads;it++) {
+      for(size_t it=0;it<n_threads;it++) {
         vrng[it].set_seed(s+it+n_threads*mpi_rank);
       }
 

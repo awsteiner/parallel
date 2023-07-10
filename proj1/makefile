@@ -1,3 +1,7 @@
+anneal_nopara.txt: anneal_para anneal_nopara
+	anneal_nopara
+	mpirun -np 2 anneal_para
+
 anneal_nopara: anneal_nopara.o
 	$(CXX) -DNO_PARA -o anneal_nopara anneal_nopara.o
 
@@ -13,4 +17,4 @@ anneal_para.o:
 		-o anneal_para.o -c anneal_para.cpp
 
 clean:
-	rm -f *.o anneal_nopara anneal_para
+	rm -f *.o anneal_nopara anneal_para anneal_nopara.txt
