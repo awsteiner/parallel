@@ -22,10 +22,13 @@
 */
   
 #include <cmath>
+#include <fstream>
 #include <cstdlib>
 
+#ifndef NO_PARA
 #include <omp.h>
 #include <mpi.h>
+#endif
 
 #include "multi_funct.h"
 #include "anneal_para.h"
@@ -46,26 +49,53 @@ int main(int argc, char *argv[]) {
 
   cout.setf(ios::scientific);
 
+  int mpi_rank=0, mpi_size=1;
+  
+#ifndef NO_PARA
   MPI_Init(&argc,&argv);
+  // Get MPI rank and size
+  MPI_Comm_rank(MPI_COMM_WORLD,&mpi_rank);
+  MPI_Comm_size(MPI_COMM_WORLD,&mpi_size);
+#endif
   
   anneal_para<multi_funct,ubvector> ga;
 
-#ifdef O2SCL_OPENMP
-  ga.n_threads=omp_get_max_threads();
+#ifndef NO_PARA
+  ga.n_threads=2;
+  //omp_get_max_threads();
 #endif
   
   double result;
   ubvector init(1);
-    
   multi_funct fx=funx;
     
   init[0]=0.1;
   ga.verbose=1;
   ga.tol_abs=1.0e-6;
   ga.mmin(1,init,result,fx);
-  cout << init[0] << " " << result << endl;
+  
+  if (mpi_rank==0) {
+    cout << init[0] << " " << result << endl;
+  }
 
+  std::string fn;
+#ifndef NO_PARA
+  fn="anneal_para_";
+  fn+=std::to_string(mpi_rank)+".txt";
+#else
+  fn="anneal_nopara.txt";
+#endif
+  
+  ofstream fout(fn.c_str());
+  fout.setf(ios::scientific);
+  for(size_t i=0;i<ga.E_store.size();i++) {
+    fout << ga.x_store[i] << " " << ga.E_store[i] << endl;
+  }
+  fout.close();
+  
+#ifndef NO_PARA
   MPI_Finalize();
+#endif
   
   return 0;
 }

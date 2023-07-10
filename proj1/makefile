@@ -1,16 +1,16 @@
-anneal_para_ts_nompi: anneal_para_ts_nompi.o
-	$(CXX) -o anneal_para_ts_nompi anneal_para_ts_nompi.o
+anneal_nopara: anneal_nopara.o
+	$(CXX) -DNO_PARA -o anneal_nopara anneal_nopara.o
 
-anneal_para_ts_nompi.o:
-	$(CXX) -I/usr/local/include \
-		-o anneal_para_ts_nompi.o -c anneal_para_ts.cpp
+anneal_nopara.o:
+	$(CXX) -I/usr/local/include -DNO_PARA \
+		-o anneal_nopara.o -c anneal_para.cpp
 
-anneal_para_ts: anneal_para_ts.o
-	mpic++ -DO2SCL_OPENMP -DO2SCL_MPI -fopenmp -o anneal_para_ts anneal_para_ts.o
+anneal_para: anneal_para.o
+	mpic++ -fopenmp -o anneal_para anneal_para.o
 
-anneal_para_ts.o:
-	mpic++ -DO2SCL_OPENMP -DO2SCL_MPI -fopenmp -I/usr/local/include \
-		-o anneal_para_ts.o -c anneal_para_ts.cpp
+anneal_para.o:
+	mpic++ -fopenmp -I/usr/local/include \
+		-o anneal_para.o -c anneal_para.cpp
 
 clean:
-	rm -f *.o anneal_para_ts_nompi anneal_para_ts
+	rm -f *.o anneal_nopara anneal_para
