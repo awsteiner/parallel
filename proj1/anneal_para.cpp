@@ -41,7 +41,7 @@ typedef boost::numeric::ublas::vector<double> ubvector;
 double funx(size_t nv, const ubvector &x) {
   double ret, a;
   a=x[0]-2.0;
-  ret=-exp(-a*a);
+  ret=-exp(-a*a)+0.01*a*a;
   return ret;
 }
 
@@ -75,7 +75,8 @@ int main(int argc, char *argv[]) {
   ga.mmin(1,init,result,fx);
   
   if (mpi_rank==0) {
-    cout << init[0] << " " << result << endl;
+    cout.precision(10);
+    cout << "Final result: " << init[0] << " " << result << endl;
   }
 
   std::string fn;
@@ -88,6 +89,7 @@ int main(int argc, char *argv[]) {
   
   ofstream fout(fn.c_str());
   fout.setf(ios::scientific);
+  fout.precision(10);
   for(size_t i=0;i<ga.E_store.size();i++) {
     fout << ga.x_store[i] << " " << ga.E_store[i] << endl;
   }

@@ -1,0 +1,211 @@
+anneal_gsl Iteration: 0
+x: 1.999638e+00 
+y: -9.999999e-01 Tptr: 1.000000e+00
+anneal_gsl Iteration: 1
+x: 1.999638e+00 
+y: -9.999999e-01 Tptr: 6.666667e-01
+anneal_gsl Iteration: 2
+x: 1.999638e+00 
+y: -9.999999e-01 Tptr: 4.444444e-01
+anneal_gsl Iteration: 3
+x: 1.999638e+00 
+y: -9.999999e-01 Tptr: 2.962963e-01
+anneal_gsl Iteration: 4
+x: 1.999638e+00 
+y: -9.999999e-01 Tptr: 1.975309e-01
+anneal_gsl Iteration: 0
+x: 2.017433e+00 
+y: -9.996931e-01 Tptr: 1.000000e+00
+anneal_gsl Iteration: 1
+x: 2.006878e+00 
+y: -9.999522e-01 Tptr: 6.666667e-01
+anneal_gsl Iteration: 2
+x: 2.006878e+00 
+y: -9.999522e-01 Tptr: 4.444444e-01
+anneal_gsl Iteration: 5
+x: 1.999638e+00 
+y: -9.999999e-01 Tptr: 1.316872e-01
+anneal_gsl Iteration: 6
+x: 1.999638e+00 
+y: -9.999999e-01 Tptr: 8.779150e-02
+anneal_gsl Iteration: 7
+x: 1.999638e+00 
+y: -9.999999e-01 Tptr: 5.852766e-02
+anneal_gsl Iteration: 3
+x: 2.002773e+00 
+y: -9.999922e-01 Tptr: 2.962963e-01
+anneal_gsl Iteration: 4
+x: 1.998298e+00 
+y: -9.999971e-01 Tptr: 1.975309e-01
+anneal_gsl Iteration: 8
+x: 1.999638e+00 
+y: -9.999999e-01 Tptr: 3.901844e-02
+anneal_gsl Iteration: 5
+x: 1.998298e+00 
+y: -9.999971e-01 Tptr: 1.316872e-01
+anneal_gsl Iteration: 6
+x: 1.998298e+00 
+anneal_gsl Iteration: 9
+x: 1.999695e+00 
+y: -9.999999e-01 Tptr: 2.601229e-02
+y: -9.999971e-01 Tptr: 8.779150e-02
+anneal_gsl Iteration: 7
+x: 1.998298e+00 
+y: -9.999971e-01 Tptr: 5.852766e-02
+anneal_gsl Iteration: 10
+x: 1.999695e+00 
+y: -9.999999e-01 Tptr: 1.734153e-02
+anneal_gsl Iteration: 11
+x: 1.999695e+00 
+y: -9.999999e-01 Tptr: 1.156102e-02
+anneal_gsl Iteration: 8
+x: 1.998298e+00 
+y: -9.999971e-01 Tptr: 3.901844e-02
+anneal_gsl Iteration: 12
+x: 1.999695e+00 
+y: -9.999999e-01 Tptr: 7.707347e-03
+anneal_gsl Iteration: 9
+x: 1.998298e+00 
+y: -9.999971e-01 Tptr: 2.601229e-02
+anneal_gsl Iteration: 13
+x: 1.999695e+00 
+y: -9.999999e-01 Tptr: 5.138231e-03
+anneal_gsl Iteration: 10
+x: 1.998298e+00 
+y: -9.999971e-01 Tptr: 1.734153e-02
+anneal_gsl Iteration: 14
+x: 1.999695e+00 
+y: -9.999999e-01 Tptr: 3.425487e-03
+anneal_gsl Iteration: 11
+x: 1.998298e+00 
+y: -9.999971e-01 Tptr: 1.156102e-02
+anneal_gsl Iteration: 15
+x: 1.999695e+00 
+y: -9.999999e-01 Tptr: 2.283658e-03
+anneal_gsl Iteration: 12
+x: 1.998298e+00 
+y: -9.999971e-01 Tptr: 7.707347e-03
+anneal_gsl Iteration: 16
+x: 1.999695e+00 
+y: -9.999999e-01 Tptr: 1.522439e-03
+anneal_gsl Iteration: 13
+x: 2.001189e+00 
+y: -9.999986e-01 Tptr: 5.138231e-03
+anneal_gsl Iteration: 17
+x: 1.999695e+00 
+y: -9.999999e-01 Tptr: 1.014959e-03
+anneal_gsl Iteration: 14
+x: 2.001189e+00 
+y: -9.999986e-01 Tptr: 3.425487e-03
+anneal_gsl Iteration: 18
+x: 1.999695e+00 
+y: -9.999999e-01 Tptr: 6.766395e-04
+anneal_gsl Iteration: 15
+x: 2.001189e+00 
+y: -9.999986e-01 Tptr: 2.283658e-03
+anneal_gsl Iteration: 19
+x: 1.999695e+00 
+y: -9.999999e-01 Tptr: 4.510930e-04
+anneal_gsl Iteration: 16
+x: 2.001189e+00 
+y: -9.999986e-01 Tptr: 1.522439e-03
+anneal_gsl Iteration: 20
+x: 1.999695e+00 
+y: -9.999999e-01 Tptr: 3.007287e-04
+anneal_gsl Iteration: 17
+x: 1.999668e+00 
+y: -9.999999e-01 Tptr: 1.014959e-03
+anneal_gsl Iteration: 21
+x: 1.999695e+00 
+y: -9.999999e-01 Tptr: 2.004858e-04
+anneal_gsl Iteration: 18
+x: 1.999668e+00 
+y: -9.999999e-01 Tptr: 6.766395e-04
+anneal_gsl Iteration: 22
+x: 1.999695e+00 
+y: -9.999999e-01 Tptr: 1.336572e-04
+anneal_gsl Iteration: 19
+x: 1.999668e+00 
+y: -9.999999e-01 Tptr: 4.510930e-04
+anneal_gsl Iteration: 23
+x: 1.999695e+00 
+y: -9.999999e-01 Tptr: 8.910479e-05
+anneal_gsl Iteration: 20
+x: 1.999668e+00 
+y: -9.999999e-01 Tptr: 3.007287e-04
+anneal_gsl Iteration: 24
+x: 1.999695e+00 
+y: -9.999999e-01 Tptr: 5.940319e-05
+anneal_gsl Iteration: 21
+x: 1.999668e+00 
+y: -9.999999e-01 Tptr: 2.004858e-04
+anneal_gsl Iteration: 25
+x: 1.999695e+00 
+y: -9.999999e-01 Tptr: 3.960213e-05
+anneal_gsl Iteration: 22
+x: 1.999668e+00 
+y: -9.999999e-01 Tptr: 1.336572e-04
+anneal_gsl Iteration: 26
+x: 1.999695e+00 
+y: -9.999999e-01 Tptr: 2.640142e-05
+anneal_gsl Iteration: 27
+x: 1.999695e+00 
+y: -9.999999e-01 Tptr: 1.760095e-05
+anneal_gsl Iteration: 23
+x: 1.999668e+00 
+y: -9.999999e-01 Tptr: 8.910479e-05
+anneal_gsl Iteration: 24
+x: 1.999668e+00 
+y: -9.999999e-01 Tptr: 5.940319e-05
+anneal_gsl Iteration: 28
+x: 1.999695e+00 
+y: -9.999999e-01 Tptr: 1.173396e-05
+anneal_gsl Iteration: 25
+x: 1.999668e+00 
+y: -9.999999e-01 Tptr: 3.960213e-05
+anneal_gsl Iteration: 26
+x: 1.999758e+00 
+y: -9.999999e-01 Tptr: 2.640142e-05
+anneal_gsl Iteration: 29
+x: 2.000239e+00 
+y: -9.999999e-01 Tptr: 7.822643e-06
+anneal_gsl Iteration: 30
+x: 2.000239e+00 
+y: -9.999999e-01 Tptr: 5.215095e-06
+anneal_gsl Iteration: 27
+x: 1.999758e+00 
+y: -9.999999e-01 Tptr: 1.760095e-05
+anneal_gsl Iteration: 31
+x: 2.000122e+00 
+y: -1.000000e+00 Tptr: 3.476730e-06
+anneal_gsl Iteration: 32
+x: 2.000122e+00 
+y: -1.000000e+00 Tptr: 2.317820e-06
+anneal_gsl Iteration: 28
+x: 1.999758e+00 
+y: -9.999999e-01 Tptr: 1.173396e-05
+anneal_gsl Iteration: 29
+x: 1.999758e+00 
+y: -9.999999e-01 Tptr: 7.822643e-06
+anneal_gsl Iteration: 30
+x: 1.999789e+00 
+y: -1.000000e+00 Tptr: 5.215095e-06
+anneal_gsl Iteration: 33
+x: 2.000122e+00 
+y: -1.000000e+00 Tptr: 1.545213e-06
+anneal_gsl Iteration: 34
+x: 2.000122e+00 
+y: -1.000000e+00 Tptr: 1.030142e-06
+anneal_gsl Iteration: 31
+x: 1.999789e+00 
+y: -1.000000e+00 Tptr: 3.476730e-06
+anneal_gsl Iteration: 32
+x: 1.999955e+00 
+y: -1.000000e+00 Tptr: 2.317820e-06
+anneal_gsl Iteration: 33
+x: 2.000008e+00 
+y: -1.000000e+00 Tptr: 1.545213e-06
+anneal_gsl Iteration: 34
+x: 2.000008e+00 
+y: -1.000000e+00 Tptr: 1.030142e-06
+Final result: 2.0000075958e+00 -9.9999999994e-01

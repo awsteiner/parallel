@@ -1,9 +1,9 @@
 # Make sure to sleep for 10 seconds to ensure a different RNG
 # seed between the non-parallel and parallel runs
 anneal_nopara.txt: anneal_para anneal_nopara
-	anneal_nopara
+	anneal_nopara > anneal_nopara.out
 	sleep 10 
-	mpirun -np 2 anneal_para
+	mpirun -np 2 anneal_para > anneal_para.out
 
 anneal_nopara: anneal_nopara.o
 	$(CXX) -DNO_PARA -o anneal_nopara anneal_nopara.o
