@@ -1,4 +1,3 @@
-
-anneal_para_ts_nompi
-
-anneal_para_ts_nompi.o
+*.o
+anneal_para
+anneal_nopara
