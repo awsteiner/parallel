@@ -1,0 +1,383 @@
+s<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+	  content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+    <title></title>
+
+    <!-- Inspire.js -->
+    <link href="https://isospin.roam.utk.edu/public_data/inspire_08_25_22/inspire.css" rel="stylesheet" />
+    <link href="https://isospin.roam.utk.edu/public_data/inspire_08_25_22/theme.css" rel="stylesheet" />
+    <link href="https://isospin.roam.utk.edu/public_data/parallel/talk.css" rel="stylesheet" />
+
+    <!-- MathJAX support:
+    The margin command ensures smaller margins around equations
+    -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+          tex2jax: {
+              inlineMath: [['$','$'], ['\\(','\\)']]
+          },
+          "HTML-CSS": {
+              styles: {
+                  '.MathJax_Display': {
+                      "margin": 0
+                  }
+              },
+              linebreaks: {
+                  automatic: true
+              }
+          }
+      });
+    </script>
+    <script type="text/javascript"
+	    src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- End MathJAX support -->
+    
+  </head>
+  
+  <body class="language-markup"
+	data-prism-plugins="normalize-whitespace"
+	>
+    
+    <header id="intro" class="slide">
+      <div style="position: absolute; left: 1120px; top: 630px;
+                  background-color: #ffffff;">&nbsp;
+      </div>
+      <div class="small">
+        <h1>A short parallel computing class for C/C++, Part II</h1>
+	<h2>
+	  Andrew W. Steiner
+	</h2>
+	&nbsp;<br>
+	&nbsp;<br>
+	<center>UTK/ORNL</center>
+	&nbsp;<br>
+	&nbsp;<br>
+	<center>July 7, 2023</center>
+	&nbsp;<br>
+	&nbsp;<br>
+      </div>
+    </header>
+    <section>
+
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>Outline</h2>
+        </div>
+	<div class="div_main">
+          <ul>
+            <li>MPI</li>
+            <li>Slurm</li>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>MPI I</h2>
+        </div>
+	<div class="div_main">
+          <ul>
+            <li>In MPI, different MPI ranks occupy entirely different
+              memory spaces
+            </li>
+            <li>MPI tasks appear as separate processes in the
+              operating system, while OpenMP threads do not create
+              separate processes</li>
+            <li>The principal way to communicate between MPI "ranks"
+              is via <tt>MPI_()</tt> function calls</li>
+            <li>MPI code is more difficult to write, but can be
+              safer because the memory is separate</li>
+            <li>Deadlocks and race conditions are still problems</li>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>MPI implementations</h2>
+        </div>
+	<div class="div_main">
+          <ul class="">
+            <li>A few leading MPI implementations, e.g.
+              <a href="https://mpich.org">MPICH</a>
+              and <a href="https://www.open-mpi.org">Open MPI</a></li>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>MPI Compiling and execution</h2>
+        </div>
+	<div class="div_main">
+          <ul>
+            <li>A "compiler wrapper"</li>
+            <pre>
+mpi_test: mpi_test.o
+	mpic++ -o mpi_test mpi_test.o
+
+mpi_test.o: mpi_test.cpp
+	mpic++ -o mpi_test.o -c mpi_test.cpp              
+            </pre>
+            <li>Different execution pattern: e.g. 
+              <pre>mpirun -np 4 ./mpi_test</pre></li>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>MPI - Round Robin</h2>
+        </div>
+	<div class="div_left_panel smaller">
+            <pre>
+#include &lt;iostream&gt;
+#include &lt;mpi.h&gt;
+
+using namespace std;
+
+int main(int argc, char *argv[]) {
+
+  int mpi_rank, mpi_size;
+  
+  // Init MPI
+  MPI_Init(&argc,&argv);
+
+  // Get MPI rank, etc.
+  MPI_Comm_rank(MPI_COMM_WORLD,&mpi_rank);
+  MPI_Comm_size(MPI_COMM_WORLD,&mpi_size);
+
+            </pre>
+        </div>
+	<div class="div_right_panel smaller">
+          <pre>
+  int tag=0, buffer=0;
+  if (mpi_size&gt;1 && mpi_rank&gt;=1) {
+    MPI_Recv(&buffer,1,MPI_INT,mpi_rank-1,
+             tag,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+  }
+
+  cout &lt;&lt; mpi_rank &lt;&lt; "/" &lt;&lt; mpi_size &lt;&lt; endl;
+
+  if (mpi_size&gt;1 && mpi_rank&lt;mpi_size-1) {
+    MPI_Send(&buffer,1,MPI_INT,mpi_rank+1,
+             tag,MPI_COMM_WORLD);
+  }
+
+  MPI_Finalize();
+
+  return 0;
+}
+            </pre>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>What is this pattern useful for?</h2>
+        </div>
+	<div class="div_main">
+          <ul class="">
+            <li>Reading or writing large data files one rank at a time</li>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>MPI Blocking and Communicators</h2>
+        </div>
+	<div class="div_main">
+          <ul class="">
+            <li>The functions <tt>MPI_Send</tt> and <tt>MPI_Recv</tt>
+              are "blocking", which means
+              that execution does not proceed until the
+              function is complete</li>
+            <li>Communicators are separate MPI objects which
+              manage communication between ranks</li>
+            <li>For simple codes, MPI_COMM_WORLD is fine</li>
+            <li>You can create sub-communicators for more complex
+              task organization</li>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>MPI timing</h2>
+        </div>
+	<div class="div_main">
+          <ul class="">
+            <li>Use <tt>MPI_Wtime()</tt> to determine total
+              running time</li>
+            <li>This is important for managing output data at the end</li>
+            <li>Output simulation data periodically, and well
+              before the end of your allotted time</li>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>MPI Pattern 2: Task Manager and Workers</h2>
+        </div>
+	<div class="div_main">
+          <ul class="">
+            <li>See <a href="https://github.com/awsteiner/parallel/blob/main/mpi_test2.cpp">mpi_test2.cpp</a></li>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>Useful Tools</h2>
+        </div>
+	<div class="div_main">
+          <ul class="">
+            <li><tt>ldd</tt>: print shared library dependencies</li>
+            <li><tt>nm</tt>: list symbols</li>
+            <li><tt>ltrace</tt> or <tt>strace</tt>: trace system
+              calls</li>
+            <li><tt>pstack, padb</tt>: print stack trace of a running
+              process, latter good with slurm</li>
+            <li><tt>addr2line</tt>: convert address into source code
+              location</li>
+            <li><tt>valgrind</tt>: memory checker</li>
+            <li><tt>gdb, gprof</tt>: Debugger and profilers (but not
+              necessarily parallel-aware</li>
+            <li>Also: DDT, Totalview, etc. for debugging</li>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>Interactive jobs</h2>
+        </div>
+	<div class="div_main">
+          <ul class="">
+            <li>When compiling and executing a code for the first
+              time, it is almost impossible to predict how (and if)
+              it will run on a compute node</li>
+            <li>Interactive jobs <tt>interact</tt>
+              allow you to run on compute nodes. This uses your
+              allocated computing time, but is invaluable</li>
+            <li>On compute nodes: modules may have a different
+              effect, file systems may look different, and
+              compiler flags may need to be different</li>
+            <li>On e.g. bridges, clearly specify the time, the
+              project, the number of nodes/threads you need,
+              the partition you will use, etc.</li>
+            <li>On bridges 2, e.g. make sure to use
+              <tt>–ntasks-per-node</tt></li>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>CPU Architechture</h2>
+        </div>
+	<div class="div_main">
+          <ul class="">
+            <li>You may need to design your code around the CPU/GPU
+              architechture</li>
+            <li>tasks vs. cores vs. ranks vs. threads vs. nodes</li>
+            <li>Cores: Typically the actual number of physical processors
+            <li>Tasks: On bridges, appears to be the same as cores,
+              but can also be MPI tasks</li>
+            <li>Ranks: Typically MPI tasks</li>
+            <li>Threads: Typically OpenMP threads</li>
+            <li>Nodes: Typically a large quantum of computing power,
+              can be one or multiple CPUs, each with many cores.</li>
+            <li>Bridges 2: one node, two CPUs, each with 64 cores</li>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>Slurm script</h2>
+        </div>
+	<div class="div_main">
+          <ul class="">
+            <li>See example <a href="https://github.com/awsteiner/parallel/blob/main/slurm.scr"><tt>slurm.scr</tt></a></li>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>Group Exercises</h2>
+        </div>
+	<div class="div_main">
+          <ul class="tight">
+            <li class="delayed">Go through Project #1, and prepare
+              to explain how parallelism is used in anneal_para.h.</li>
+            <li class="delayed">Is there a place where the
+              parallelism should be changed? What is the overhead
+              associated with the parallelism in this code?</li>
+            <li class="delayed">For Project #1, propose a makefile
+              target to compile and a separate makefile target
+              to run the code on a non-HPC system</li>
+            <li class="delayed">For Project #1, propose a slurm script
+              for bridges using 1 full node for 24 hours</li>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+      <article class="slide">
+        <div class="div_header">
+          <h2>Conclusion</h2>
+        </div>
+	<div class="div_main">
+          <ul class="tight">
+            <li>AMA</li>
+          </ul>
+	</div>
+      </article>
+      
+      <!-- ------------------------------------------------ -->
+      
+    </section>
+    
+    <script src="https://isospin.roam.utk.edu/public_data/inspire_08_25_22/inspire.mjs" type="module">
+    </script>
+    
+  </body>
+</html>
